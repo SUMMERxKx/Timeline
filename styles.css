@@ -1,0 +1,488 @@
+/* =========================
+   Fonts (put files in /assets)
+   ========================= */
+   /* Custom font declarations for TRU brand typography */
+   /* Roboto Slab - Variable font for headings and titles */
+   @font-face{
+    font-family: "Roboto Slab";
+    src: url("assets/RobotoSlab-Variable.woff2") format("woff2-variations");
+    font-weight: 400 700; font-style: normal; font-display: swap;
+  }
+  /* Roboto Bold - Used for emphasis and navigation elements */
+  @font-face{
+    font-family: "Roboto";
+    src: url("assets/Roboto-Bold.woff2") format("woff2");
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  /* Inter - Primary body font for readability */
+  @font-face{
+    font-family: "Inter";
+    src: url("assets/Inter-Regular.woff2") format("woff2");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  
+  /* =========================
+     Theme (easy to tweak)
+     ========================= */
+  /* CSS custom properties for consistent theming and easy customization */
+  :root{
+    /* TRU-leaning accessible palette (adjust if needed) */
+    --brand: #004d66;      /* deep teal - primary brand color */
+    --brand-2: #0f6b82;    /* secondary teal - for secondary elements */
+    --accent: #2d6cdf;     /* interactive blue - for buttons and links */
+    --ink: #0f1a2b;        /* dark text color for high contrast */
+    --muted: #667085;      /* muted text for secondary information */
+    --bg: #f6f8fb;         /* light background color */
+    --card: #ffffff;       /* white background for cards */
+    --border: #e5e7eb;     /* subtle border color */
+  
+    /* Layout dimensions for timeline cards and spacing */
+    --card-w: 220px;       /* width of timeline cards */
+    --card-h: 110px;       /* height of timeline cards */
+    --gap-x: 14px;         /* horizontal gap between cards */
+    --gap-y: 10px;         /* vertical gap between card rows */
+    --lane-label-w: 100px; /* width of term labels (Summer/Fall/Winter) */
+  
+    /* Responsive design - smaller cards on mobile devices */
+    --card-w-sm: 180px;    /* smaller card width for mobile */
+  }
+  
+  /* =========================
+     Base
+     ========================= */
+  /* Universal box-sizing for consistent layout calculations */
+  * { box-sizing: border-box; }
+  /* Ensure full height for proper layout */
+  html,body{ height:100%; }
+  /* Base body styling with TRU brand colors and typography */
+  body{
+    margin:0;
+    color: var(--ink);
+    background: var(--bg);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  }
+  
+  /* =========================
+     Brand bar (logos + title)
+     ========================= */
+  /* Top navigation bar with TRU branding */
+  .brandbar{
+    display:grid;
+    grid-template-columns: auto 1fr auto; /* Left logo, center title, right logo */
+    align-items:center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #eef1f5;
+  }
+  /* Logo styling with consistent height and aspect ratio preservation */
+  .brand-logo{ height: 48px; width:auto; object-fit: contain; }
+  /* TRU logo specific styling - make it larger for better visual balance */
+  .brand-logo.left{ height: 72px; }
+  /* Centered title using TRU's serif font for brand recognition */
+  .brand-title{
+    margin:0; text-align:center;
+    font-family: "Roboto Slab", serif;
+    font-weight: 600; letter-spacing:.2px;
+    color: var(--brand);
+  }
+  
+  /* =========================
+     Header
+     ========================= */
+  /* Main application header with responsive padding */
+  .app-header{
+    padding: 16px clamp(16px, 4vw, 40px); /* Responsive padding that scales with viewport */
+    display: grid;
+    gap: 16px;
+  }
+  
+  /* Page heading using TRU's serif font for hierarchy */
+  .page-h2{
+    margin: 4px 0 6px;
+    font-family: "Roboto Slab", serif;
+    font-weight: 600;
+    color: var(--brand);
+  }
+  /* Subtitle text with muted color for secondary information */
+  .lede{ margin:0; color: var(--muted); }
+  
+  /* Header row layout with title on left, actions on right */
+  .header-row{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+  }
+  /* Container for action buttons with consistent spacing */
+  .actions{ display:flex; gap:10px; }
+  /* Primary button styling for main actions */
+  button.primary, .builder button{
+    background: var(--brand); color:#fff; border:none; cursor:pointer;
+    padding:10px 14px; border-radius:12px; font-weight:600;
+  }
+  /* Secondary button styling for less prominent actions */
+  button.secondary{
+    background:#e5e7eb; color:#111827; border:none; cursor:pointer;
+    padding:10px 14px; border-radius:12px; font-weight:600;
+  }
+  
+  /* Instructions box with subtle border and background */
+  .howto{
+    background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:12px 14px;
+  }
+  /* Instructions heading with secondary brand color */
+  .howto h3{
+    margin:0 0 6px; font-family:"Roboto", system-ui; font-weight:600; color:var(--brand-2);
+  }
+  
+  /* Timeline configuration form with responsive grid layout */
+  .builder{
+    display:grid;
+    grid-template-columns: repeat(6, minmax(120px, 1fr)); /* 6 columns with minimum width */
+    gap:10px;
+  }
+  /* Form label styling with consistent spacing */
+  .builder label{ display:grid; gap:6px; font-size:.9rem; }
+  /* Form input and select styling with focus states */
+  .builder input, .builder select{
+    padding:8px 10px; border-radius:10px; border:1px solid #d1d5db; background:#fff; outline:none;
+  }
+  /* Focus state with brand color and subtle shadow */
+  .builder input:focus, .builder select:focus{
+    border-color: var(--brand); box-shadow: 0 0 0 3px rgba(0,77,102,.15);
+  }
+  
+  /* =========================
+     Timeline
+     ========================= */
+  /* Main timeline container with navigation arrows */
+  .track-shell{
+    position: relative;
+    display:grid; grid-template-columns:auto 1fr auto; /* Left nav, content, right nav */
+    align-items:center; gap:8px;
+    padding: 6px clamp(10px, 3vw, 24px) 0; /* Responsive horizontal padding */
+  }
+  /* Navigation arrow buttons with circular design */
+  .nav{
+    width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+    background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.08); font-size:18px;
+  }
+  /* Disabled state for navigation when at scroll limits */
+  .nav:disabled{ opacity:.4; cursor:default; }
+  
+  /* Main viewport containing the timeline content */
+  .viewport{
+    position: relative;
+    overflow: hidden; /* Hide content that extends beyond viewport */
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    padding: 16px 16px 44px calc(var(--lane-label-w) + 12px); /* Space for fixed labels */
+    min-height: calc( (var(--card-h) * 3) + (var(--gap-y) * 2) + 16px + 44px); /* Height for 3 rows + year ruler */
+  }
+  
+  /* Scrollable content container that moves horizontally */
+  .content{
+    position: relative;
+    height: calc( (var(--card-h) * 3) + (var(--gap-y) * 2) ); /* Height for 3 term rows */
+    transform: translateX(0); /* Initial position, modified by JavaScript */
+    will-change: transform; /* Performance optimization for animations */
+  }
+  
+  /* Individual timeline cards representing academic terms */
+  .term{
+    position: absolute; /* Positioned by JavaScript for precise placement */
+    width: var(--card-w);
+    height: var(--card-h);
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    display: grid; grid-template-rows: auto 1fr; /* Header and content areas */
+    cursor: pointer; /* Indicates clickable element */
+  }
+  /* Card header with term and year information */
+  .term .label{
+    padding: 8px 10px; font-weight:700; font-size:.9rem;
+    font-family: "Roboto", system-ui; background: linear-gradient(0deg,#f8fafc,#ffffff);
+    border-bottom: 1px solid #eef2f7;
+  }
+  /* Card content area showing note preview */
+  .term .preview{
+    padding: 8px 10px; font-size:.9rem; color:#111827;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Truncate long text */
+  }
+  
+  /* Fixed lane labels that stay in place during horizontal scrolling */
+  .lane-labels{
+    position:absolute; left:12px; top:16px; width: var(--lane-label-w); pointer-events:none;
+  }
+  /* Individual term labels (Summer, Fall, Winter) */
+  .lane-labels .lane-tag{
+    height: var(--card-h); margin-bottom: var(--gap-y);
+    display:flex; align-items:center; color: var(--muted);
+    font-family:"Roboto", system-ui; font-weight:600;
+  }
+  
+  /* Visual separators between term rows for better readability */
+  .content::before, .content::after{
+    content:""; position:absolute; left:0; right:0; height:1px; background:#edf0f5;
+  }
+  .content::before{ top: calc(var(--card-h) + var(--gap-y)/2); } /* Between Summer and Fall */
+  .content::after { top: calc(var(--card-h)*2 + var(--gap-y) + var(--gap-y)/2); } /* Between Fall and Winter */
+  
+  /* Year ruler showing academic years at the bottom of the timeline */
+  .yearsTrack{ position: relative; height:26px; margin-top: 12px; transform: translateX(0); }
+  /* Individual year labels with connecting lines */
+  .yearLabel{
+    position:absolute; bottom:0; height:100%;
+    display:flex; align-items:center; gap:8px; color: var(--muted);
+    font-weight:700; white-space:nowrap; font-family:"Roboto", system-ui;
+  }
+  /* Connecting line before each year label */
+  .yearLabel::before{
+    content:""; height:2px; background:#e5e7eb; flex:1; border-radius:2px; margin-right:6px;
+  }
+  
+  /* Footer hint text for user guidance */
+  .hint{ color:#6b7280; font-size:.9rem; padding: 14px clamp(16px, 4vw, 40px) 28px; }
+  /* Credit line - barely visible */
+  .credit{ 
+    color: #d1d5db; 
+    font-size: 0.75rem; 
+    text-align: center; 
+    margin-top: 8px; 
+    opacity: 0.6; 
+  }
+  
+  /* =========================
+     Modal
+     ========================= */
+  /* Hide modal by default */
+  .modal.hidden{ display:none; }
+  /* Modal overlay covering entire screen */
+  .modal{ position:fixed; inset:0; display:grid; place-items:center; z-index:50; }
+  /* Semi-transparent backdrop for modal focus */
+  .modal-backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.25); }
+  /* Modal content panel with shadow and rounded corners */
+  .modal-panel{
+    position:relative; width:min(680px, calc(100vw - 40px)); /* Responsive width with max */
+    background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,.25);
+    padding:18px; display:grid; gap:10px;
+  }
+  /* Modal title using TRU serif font */
+  .modal-panel h2{ margin: 0 0 6px; font-family:"Roboto Slab", serif; }
+  /* Text area for note editing with consistent styling */
+  .modal-panel textarea{ width:100%; border:1px solid var(--border); border-radius:12px; padding:10px; font:inherit; resize:vertical; }
+  /* Modal action buttons aligned to the right */
+  .modal-actions{ display:flex; gap:10px; justify-content:flex-end; }
+  
+  /* Confirmation modal specific styles */
+  .confirm-panel{ 
+    max-width: 480px; 
+    text-align: center; 
+  }
+  .confirm-header{ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 12px; 
+    margin-bottom: 16px; 
+  }
+  .warning-icon{ 
+    font-size: 2.5rem; 
+    line-height: 1; 
+  }
+  .confirm-message{ 
+    color: var(--muted); 
+    line-height: 1.5; 
+    margin: 0 0 20px; 
+  }
+  /* Danger button styling for destructive actions */
+  button.danger{
+    background: #dc2626; color:#fff; border:none; cursor:pointer;
+    padding:10px 14px; border-radius:12px; font-weight:600;
+    transition: background-color 0.2s ease;
+  }
+  button.danger:hover{
+    background: #b91c1c;
+  }
+  
+  /* Easter egg modal styles */
+  .easter-egg-panel{ 
+    max-width: 400px; 
+    text-align: center; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  .easter-egg-content{ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 16px; 
+    margin-bottom: 20px; 
+  }
+  .goat-animation{ 
+    font-size: 4rem; 
+    animation: goatBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  }
+  .easter-egg-title{ 
+    font-family: "Roboto Slab", serif; 
+    font-weight: 600; 
+    font-size: 1.5rem; 
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .goat-sounds{ 
+    display: flex; 
+    gap: 8px; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+  }
+  .sound{ 
+    background: rgba(255,255,255,0.2); 
+    padding: 4px 8px; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    animation: soundPop 0.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.2s);
+  }
+  .sound:nth-child(1) { --i: 0; }
+  .sound:nth-child(2) { --i: 1; }
+  .sound:nth-child(3) { --i: 2; }
+  .easter-egg-message{ 
+    margin: 0; 
+    font-size: 1rem; 
+    opacity: 0.9; 
+  }
+  
+  /* Easter egg animations */
+  @keyframes goatBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(-5deg); }
+    75% { transform: translateY(-10px) rotate(5deg); }
+  }
+  
+  @keyframes soundPop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  /* =========================
+     Print view
+     ========================= */
+  /* Hidden by default, only shown during print */
+  .print-view{ display:none; }
+  /* Print header with logos and title in a grid layout */
+  .print-logos{
+    display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px;
+  }
+  /* Smaller logos for print layout */
+  .print-logos img{ height:28px; width:auto; object-fit:contain; }
+  /* Print title with black color for better print contrast */
+  .print-logos h1{
+    margin:0; text-align:center; font-family:"Roboto Slab", serif; font-weight:600; color:#000;
+  }
+  /* Print metadata with timeline generation details */
+  .print-meta{ color:#333; margin:.25rem 0 1rem; font-size:.95rem; }
+  
+  /* Print table layout for structured timeline display */
+  .print-table{ display:grid; gap:16px; }
+  
+  /* Enhanced year headers in print view */
+  .print-year-header{ 
+    margin-top: 20px; 
+    border-bottom: 2px solid var(--brand); 
+    padding-bottom: 8px; 
+  }
+  .year-title{ 
+    font-family:"Roboto Slab", serif; 
+    font-weight: 600; 
+    font-size: 1.2rem; 
+    color: var(--brand); 
+    margin-bottom: 4px; 
+  }
+  .year-divider{ 
+    height: 1px; 
+    background: #e5e7eb; 
+    margin-top: 4px; 
+  }
+  
+  /* Enhanced individual timeline rows in print format */
+  .print-row{ 
+    display:grid; 
+    grid-template-columns: 140px 1fr; 
+    gap:16px; 
+    padding:12px 16px; 
+    border:1px solid #e5e7eb; 
+    border-radius:8px; 
+    background:#fff; 
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    min-height: fit-content;
+  }
+  .term-label{ 
+    font-family:"Roboto", system-ui; 
+    font-weight: 600; 
+    color: var(--brand-2); 
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .text-content{ 
+    white-space:pre-wrap; 
+    line-height: 1.5; 
+    color: #374151;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .text-content em{ 
+    color: #9ca3af; 
+    font-style: italic; 
+  }
+  
+  /* Spacing between years */
+  .year-spacer{ 
+    height: 8px; 
+  }
+  
+  /* =========================
+     Responsive tweaks
+     ========================= */
+  /* Mobile device adjustments */
+  @media (max-width: 840px){
+    :root{ --card-w: var(--card-w-sm); --lane-label-w: 84px; } /* Smaller cards and labels */
+    .brand-logo{ height:36px; } /* Smaller logos for mobile */
+    .brand-logo.left{ height: 54px; } /* TRU logo larger on mobile */
+    .brand-title{ font-size:1.05rem; } /* Smaller title */
+  }
+  
+  /* =========================
+     Print media (shows print view only)
+     ========================= */
+  /* Print-specific styles that override screen styles */
+  @media print{
+    body{ background:#fff; } /* White background for print */
+    .brandbar, .app-header, .track-shell, .hint, .modal{ display:none !important; } /* Hide interactive elements */
+    .print-view{ display:block; padding: 12mm; } /* Show print view with margins */
+    
+    /* Ensure text wraps properly in print */
+    .print-row{ 
+      page-break-inside: avoid; 
+      break-inside: avoid; 
+    }
+    .text-content{ 
+      word-wrap: break-word !important; 
+      overflow-wrap: break-word !important; 
+      word-break: break-word !important; 
+      hyphens: auto; 
+    }
+    .term-label{ 
+      word-wrap: break-word !important; 
+      overflow-wrap: break-word !important; 
+    }
+  }
+  
