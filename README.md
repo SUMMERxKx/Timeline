@@ -26,7 +26,5 @@ You can visualize each term in a horizontal timeline, add notes, and export your
 - **localStorage** — Client-side persistence of notes
 - **No backend required** — Runs fully in the browser
 
----
 
-## 📂 Project Structure
 
