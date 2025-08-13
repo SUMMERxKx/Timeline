@@ -5,20 +5,20 @@
    /* Roboto Slab - Variable font for headings and titles */
    @font-face{
     font-family: "Roboto Slab";
-    src: url("assets/RobotoSlab-Variable.woff2") format("woff2-variations");
-    font-weight: 400 700; font-style: normal; font-display: swap;
+    src: url("assets/Roboto_Slab/RobotoSlab-VariableFont_wght.ttf") format("truetype");
+    font-weight: 100 900; font-style: normal; font-display: swap;
   }
-  /* Roboto Bold - Used for emphasis and navigation elements */
+  /* Roboto - Variable font for emphasis and navigation elements */
   @font-face{
     font-family: "Roboto";
-    src: url("assets/Roboto-Bold.woff2") format("woff2");
-    font-weight: 600; font-style: normal; font-display: swap;
+    src: url("assets/Roboto/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
+    font-weight: 100 900; font-style: normal; font-display: swap;
   }
-  /* Inter - Primary body font for readability */
+  /* Inter - Variable font for primary body text */
   @font-face{
     font-family: "Inter";
-    src: url("assets/Inter-Regular.woff2") format("woff2");
-    font-weight: 400; font-style: normal; font-display: swap;
+    src: url("assets/Inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+    font-weight: 100 900; font-style: normal; font-display: swap;
   }
   
   /* =========================
@@ -26,9 +26,9 @@
      ========================= */
   /* CSS custom properties for consistent theming and easy customization */
   :root{
-    /* TRU-leaning accessible palette (adjust if needed) */
-    --brand: #004d66;      /* deep teal - primary brand color */
-    --brand-2: #0f6b82;    /* secondary teal - for secondary elements */
+    /* TRU brand colors - updated to official TRU colors */
+    --brand: #003143;      /* TRU blue - primary brand color */
+    --brand-2: #007788;    /* dark teal - secondary brand color */
     --accent: #2d6cdf;     /* interactive blue - for buttons and links */
     --ink: #0f1a2b;        /* dark text color for high contrast */
     --muted: #667085;      /* muted text for secondary information */
