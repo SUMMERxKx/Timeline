@@ -129,9 +129,9 @@
     background:#fff; border:1px solid var(--border); border-radius:12px;
     padding:12px 14px;
   }
-  /* Instructions heading with secondary brand color */
+  /* Instructions heading with consistent font styling */
   .howto h3{
-    margin:0 0 6px; font-family:"Roboto", system-ui; font-weight:600; color:var(--brand-2);
+    margin:0 0 6px; font-family:"Roboto Slab", serif; font-weight:600; color:var(--brand-2);
   }
   
   /* Timeline configuration form with responsive grid layout */
@@ -154,6 +154,16 @@
   /* =========================
      Timeline
      ========================= */
+  /* Timeline usage hint at the top */
+  .timeline-hint{
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 0 clamp(16px, 4vw, 40px) 12px;
+    text-align: center;
+    font-family: "Roboto", system-ui;
+    font-weight: 500;
+  }
+  
   /* Main timeline container with navigation arrows */
   .track-shell{
     position: relative;
@@ -244,8 +254,8 @@
     content:""; height:2px; background:#e5e7eb; flex:1; border-radius:2px; margin-right:6px;
   }
   
-  /* Footer hint text for user guidance */
-  .hint{ color:#6b7280; font-size:.9rem; padding: 14px clamp(16px, 4vw, 40px) 28px; }
+  /* Footer styling */
+  .hint{ padding: 14px clamp(16px, 4vw, 40px) 28px; }
   /* Credit line - barely visible */
   .credit{ 
     color: #d1d5db; 
