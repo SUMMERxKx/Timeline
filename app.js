@@ -51,6 +51,9 @@ let currentKey = null, // Storage key for the currently edited note
 let metrics = { w: 220, gap: 14, h: 110, gapY: 10 }; // Card width, gap, height, vertical gap
 let currentTerms = []; // Array to keep track of visible terms for export functionality
 
+/* Responsive scroll distance based on screen size */
+let scrollDistance = 400; // Default scroll distance for desktop
+
 /* ====== helpers ====== */
 /* Utility function to get the index of a term in the ORDER array */
 const termIndex = t => ORDER.indexOf(t);
@@ -62,6 +65,20 @@ const absIndex = (t, y) => (y * TERMS_PER_YEAR + termIndex(t));
 const px = n => `${n}px`;
 
 /**
+ * Update scroll distance based on screen size for better mobile experience
+ */
+function updateScrollDistance() {
+  const screenWidth = window.innerWidth;
+  if (screenWidth <= 480) {
+    scrollDistance = 200; // Smaller scroll for mobile
+  } else if (screenWidth <= 768) {
+    scrollDistance = 300; // Medium scroll for tablet
+  } else {
+    scrollDistance = 400; // Full scroll for desktop
+  }
+}
+
+/**
  * Read current CSS custom properties to update layout metrics
  * This ensures the JavaScript calculations match the current CSS values
  */
@@ -71,6 +88,9 @@ function readMetrics(){
   metrics.gap = parseFloat(r.getPropertyValue("--gap-x")) || 14;
   metrics.h = parseFloat(r.getPropertyValue("--card-h")) || 110;
   metrics.gapY = parseFloat(r.getPropertyValue("--gap-y")) || 10;
+  
+  // Update scroll distance based on current screen size
+  updateScrollDistance();
 }
 
 /**
@@ -185,6 +205,9 @@ function render(startTerm, startYear, gradYear){
       editTextarea.value = getNote(key);
       modal.classList.remove("hidden");
       editTextarea.focus();
+      
+      // Prevent body scroll when modal is open on mobile
+      document.body.style.overflow = 'hidden';
     });
 
     // Assemble and add card to timeline
@@ -393,9 +416,9 @@ clearNotesBtn.addEventListener("click", () => {
   confirmModal.classList.remove("hidden");
 });
 
-/* Navigation arrow handlers */
-navLeft.addEventListener("click", () => { x += 400; applyX(); });
-navRight.addEventListener("click", () => { x -= 400; applyX(); });
+/* Navigation arrow handlers with responsive scroll distance */
+navLeft.addEventListener("click", () => { x += scrollDistance; applyX(); });
+navRight.addEventListener("click", () => { x -= scrollDistance; applyX(); });
 
 /* Mouse dragging functionality for timeline scrolling */
 viewport.addEventListener("mousedown", (e) => {
@@ -426,8 +449,14 @@ viewport.addEventListener("touchmove", (e) => {
 viewport.addEventListener("touchend", () => { dragging = false; });
 
 /* Modal dialog event handlers */
-modalBackdrop.addEventListener("click", () => modal.classList.add("hidden"));
-cancelNoteBtn.addEventListener("click", () => modal.classList.add("hidden"));
+modalBackdrop.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  document.body.style.overflow = ''; // Restore body scroll
+});
+cancelNoteBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  document.body.style.overflow = ''; // Restore body scroll
+});
 saveNoteBtn.addEventListener("click", () => {
   if(!currentKey) return;
   const text = (editTextarea.value || "").trimEnd();
@@ -436,6 +465,7 @@ saveNoteBtn.addEventListener("click", () => {
     currentCard.textContent = text.split(/\r?\n/)[0] || "Click to add notes"; 
   }
   modal.classList.add("hidden");
+  document.body.style.overflow = ''; // Restore body scroll
   
   // Check for easter egg trigger in the first container
   checkEasterEgg(text);
@@ -503,7 +533,10 @@ function checkEasterEgg(text) {
 
 /* Keyboard shortcuts for modal */
 window.addEventListener("keydown", (e) => {
-  if(e.key === "Escape" && !modal.classList.contains("hidden")) modal.classList.add("hidden");
+  if(e.key === "Escape" && !modal.classList.contains("hidden")) {
+    modal.classList.add("hidden");
+    document.body.style.overflow = ''; // Restore body scroll
+  }
   if(e.key === "Enter" && (e.ctrlKey || e.metaKey) && !modal.classList.contains("hidden")) saveNoteBtn.click();
   // Handle confirmation modal keyboard shortcuts
   if(e.key === "Escape" && !confirmModal.classList.contains("hidden")) confirmModal.classList.add("hidden");
@@ -532,9 +565,20 @@ printPdfBtn.addEventListener("click", () => {
   window.print(); // Choose "Save as PDF" to create a .pdf file
 });
 
+/* Window resize handler for responsive updates */
+window.addEventListener("resize", () => {
+  // Update metrics and scroll distance when window is resized
+  readMetrics();
+  // Re-apply current scroll position with new metrics
+  applyX();
+});
+
 /* ====== initialization ====== */
 /* Set default values and render initial timeline */
 startTermEl.value = "Summer";
 startYearEl.value = new Date().getFullYear();
 gradYearEl.value = new Date().getFullYear() + 2;
+
+// Initialize with current screen size
+updateScrollDistance();
 render(startTermEl.value, Number(startYearEl.value), Number(gradYearEl.value));
