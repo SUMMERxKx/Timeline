@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Meta tags for proper character encoding and responsive viewport -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Your path through TRU</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top navigation bar containing TRU branding and logos -->
+  <div class="brandbar">
+    <img class="brand-logo left" src="assets/tru-logo.png" alt="TRU logo" />
+    <h1 class="brand-title">Your path through TRU</h1>
+    <img class="brand-logo right" src="assets/tru-open-press.png" alt="TRU Open Press logo" />
+  </div>
+
+  <!-- Main application header containing title, description, and controls -->
+  <header class="app-header">
+    <!-- Top row with page title and action buttons -->
+    <div class="header-row">
+      <!-- Left side: Page heading and description -->
+      <div>
+        <h2 class="page-h2">Milestone Timeline</h2>
+        <p class="lede">Plan your academic journey from start to graduation.</p>
+      </div>
+
+      <!-- Right side: Export and print action buttons -->
+      <div class="actions">
+        <!-- Button to download timeline as plain text file -->
+        <button id="exportTxt" class="secondary">Download .txt</button>
+        <!-- Button to print timeline or save as PDF -->
+        <button id="printPdf" class="primary">Print / Save as PDF</button>
+      </div>
+    </div>
+
+    <!-- Instructions section explaining how to use the timeline tool -->
+    <section class="howto">
+      <h3>How to use</h3>
+      <ol>
+        <li>Choose how many years until you graduate</li>
+        <li>Click "Generate Timeline" to create your plan</li>
+        <li>Scroll left/right to see all years</li>
+        <li>Click on any item to edit it</li>
+        <li>Download or print when you're done</li>
+      </ol>
+    </section>
+
+    <!-- Timeline configuration form -->
+    <!-- This form collects user input to generate the academic timeline -->
+    <form id="builder" class="builder" autocomplete="off">
+      <!-- Dropdown to select starting academic term -->
+      <label>
+        Start term
+        <select id="startTerm">
+          <option>Summer</option>
+          <option>Fall</option>
+          <option>Winter</option>
+        </select>
+      </label>
+
+      <!-- Input field for starting academic year -->
+      <label>
+        Start year
+        <input id="startYear" type="number" min="1900" max="2100" placeholder="2026" required />
+      </label>
+
+      <!-- Input field for expected graduation year -->
+      <label>
+        Expected grad year
+        <input id="gradYear" type="number" min="1900" max="2100" placeholder="2028" required />
+      </label>
+
+      <!-- Primary action button to generate the timeline -->
+      <button id="generate" type="submit">Generate timeline</button>
+      <!-- Secondary button to clear all saved notes -->
+      <button id="clearNotes" type="button" class="secondary">Clear notes</button>
+    </form>
+  </header>
+
+  <!-- Main content area containing the interactive timeline -->
+  <main>
+    <!-- Timeline container with navigation controls and viewport -->
+    <div class="track-shell">
+      <!-- Left navigation arrow for scrolling timeline -->
+      <button class="nav left" id="navLeft">◀</button>
+
+      <!-- Main viewport containing the timeline content -->
+      <div class="viewport" id="viewport">
+        <!-- Fixed lane labels that stay in place during horizontal scrolling -->
+        <!-- These show the three academic terms (Summer, Fall, Winter) -->
+        <div class="lane-labels" id="laneLabels">
+          <div class="lane-tag">Summer</div>
+          <div class="lane-tag">Fall</div>
+          <div class="lane-tag">Winter</div>
+        </div>
+
+        <!-- Scrollable content area containing the timeline cards -->
+        <!-- This div is absolutely positioned and moves horizontally -->
+        <div class="content" id="content"></div>
+
+        <!-- Year ruler showing academic years at the bottom -->
+        <!-- This moves in sync with the content for visual alignment -->
+        <div class="yearsTrack" id="yearsTrack"></div>
+      </div>
+
+      <!-- Right navigation arrow for scrolling timeline -->
+      <button class="nav right" id="navRight">▶</button>
+    </div>
+    
+    <!-- Timeline usage hint moved to bottom -->
+    <div class="timeline-hint">
+      Click a box to add/edit notes. Drag anywhere to scroll, or use ◀ ▶. <!--Dont move this line-->
+    </div>
+  </main>
+
+  <!-- Footer with credit -->
+  <footer class="hint">
+    <div class="credit">Created by Samar Khajuria (TRU Open Press)</div>
+  </footer>
+
+  <!-- Modal dialog for editing timeline notes -->
+  <!-- This appears when users click on timeline cards -->
+  <div id="editor" class="modal hidden">
+    <!-- Semi-transparent backdrop that closes modal when clicked -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <!-- Modal content panel -->
+    <div class="modal-panel">
+      <!-- Modal title showing which term/year is being edited -->
+      <h2 id="editTitle">Edit notes</h2>
+      <!-- Text area for entering/editing notes -->
+      <textarea id="editTextarea" rows="8" placeholder="Type here..."></textarea>
+      <!-- Modal action buttons -->
+      <div class="modal-actions">
+        <!-- Save button to store the note -->
+        <button id="saveNote" class="primary">Save</button>
+        <!-- Cancel button to close without saving -->
+        <button id="cancelNote" class="secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation modal for clearing notes -->
+  <!-- This appears when users click the "Clear notes" button -->
+  <div id="confirmClear" class="modal hidden">
+    <!-- Semi-transparent backdrop that closes modal when clicked -->
+    <div class="modal-backdrop" id="confirmBackdrop"></div>
+    <!-- Modal content panel -->
+    <div class="modal-panel confirm-panel">
+      <!-- Warning icon and title -->
+      <div class="confirm-header">
+        <div class="warning-icon">⚠️</div>
+        <h2 id="confirmTitle">Clear All Notes</h2>
+      </div>
+      <!-- Confirmation message -->
+      <p class="confirm-message">
+        Are you sure you want to clear all saved notes from your timeline? 
+        This action cannot be undone.
+      </p>
+      <!-- Modal action buttons -->
+      <div class="modal-actions">
+        <!-- Cancel button to keep notes -->
+        <button id="cancelClear" class="secondary">Keep Notes</button>
+        <!-- Confirm button to clear notes -->
+        <button id="confirmClearBtn" class="danger">Clear All Notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Easter egg modal for the goat animation -->
+  <!-- This appears when someone writes "who is samar" in the first container -->
+  <div id="easterEgg" class="modal hidden">
+    <!-- Semi-transparent backdrop that closes modal when clicked -->
+    <div class="modal-backdrop" id="easterEggBackdrop"></div>
+    <!-- Modal content panel -->
+    <div class="modal-panel easter-egg-panel">
+      <!-- Goat animation and message -->
+      <div class="easter-egg-content">
+        <div class="goat-animation">🐐</div>
+        <h2 class="easter-egg-title">Samar is the GOAT!</h2>
+        <div class="goat-sounds">
+          <span class="sound">Meh</span>
+          <span class="sound">Meh</span>
+          <span class="sound">Meh</span>
+        </div>
+        <p class="easter-egg-message">You found the secret! 🎉</p>
+      </div>
+      <!-- Close button -->
+      <div class="modal-actions">
+        <button id="closeEasterEgg" class="primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden print view that appears only when printing -->
+  <!-- This provides a clean, formatted layout for PDF generation -->
+  <section id="printView" class="print-view">
+    <!-- Print header with logos and title -->
+    <header class="print-head">
+      <div class="print-logos">
+        <img src="assets/tru-logo.png" alt="TRU logo" />
+        <h1>Your path through TRU — Plan</h1>
+        <img src="assets/tru-open-press.png" alt="TRU Open Press logo" />
+      </div>
+      <!-- Metadata showing timeline generation details -->
+      <p id="printMeta" class="print-meta"></p>
+    </header>
+    <!-- Print table containing all timeline data in a structured format -->
+    <div id="printTable" class="print-table"></div>
+  </section>
+
+  <!-- JavaScript file that powers all interactive functionality -->
+  <script src="app.js"></script>
+</body>
+</html>
